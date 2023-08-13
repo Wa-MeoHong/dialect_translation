@@ -65,10 +65,7 @@ python ./Alpaca-QLoRA/finetune.py \
 * lora_target_modules는 기본은 LLaMA 기반의 것을 사용하나, 현재 GPT-NeoX 포맷용으로 저 값을 사용 <br>
 * prompt는 데이터셋 전처리 과정에서 프롬프트를 커스텀으로 하나 구성하였음.
 * wandb를 통해 웹사이트에서 Training과정을 확인할 수 있음.<br>
-
-
-
-
+![Training](./Training_picture.png)
 
 ## 5. 모델 테스트
 학습한 모델을 테스트하고, BLEU 점수를 계산.
@@ -85,9 +82,35 @@ python ./Model_Test/Model_Test.py \
 * 22년 딥러닝 기반 한국어 방언 기계번역 연구 논문에서 나온 Transformer를 이용한 Many2One 모델보다는 매우 떨어지는 모습을 보였음.
 * 아마도 **학습에 들인 데이터셋 수**와 데이터셋 처리방식을 개선한다면, 더 좋은 번역 성능을 보일 수 있을 것.
 
+## 6. 결론
+* 생각보다 번역은 잘 이루어졌다고 생각했지만, 아직까지 매우 부족한 모습을 보여주는 것 같음.
+* 이러한 이유로는 학습 데이터셋 부족과, 제대로 데이터셋을 전처리하지 않았다는 점, 학습 시간이 3시간30분 밖에 이루어지지 않았다는 점이다.
+* 즉, Colab 학습을 좀 더 오래 하고, 데이터셋을 좀 더 증강시킬 수 있다면, 조금 더 나은 모습을 보여줄 수 있을 것.
+
+## 번외. GGML 모델 변환
+12.8B개의 파라미터를 가진 Polyglot-ko의 모델은 **GPU없이 돌지 못한다.** <br>
+따라서, CPU RAM으로도 돌릴 수 있게 GGML로 변환해보고 그 성능을 시험해보고 싶었음. 
+* GGML로 변환하기 전, LoRA 모듈과 원본 모듈을 하나로 병합하는 과정 필요.
+```bash
+python ./Model_Create/MergeModel.py \
+	--source_path 'EleutherAI/polyglot-ko-12.8b' \
+	--lora_path 'Meohong/Dialect-Polyglot-12.8b-QLoRA' \
+	--dest_path 'save dir you want to'
+```
+* 병합한 모델과 원본 모델의 토크나이저, special_token.json, 토크나이저config.json을 하나의 모델 bin파일로 변환
+```bash
+python ./Model_Create/TransformGGML.py \
+	--dir_model '저장한 모델 위치' \
+	--dest_path 'save dir you want to'
+```
+> **원본 모델이 _28GB_ 정도 되기에 큰 용량을 차지한다. 충분한 RAM과 저장공간을 확보하기 바람.**
+* 그 후, 4bit-Quantization을 진행한다. jupyter Notebook으로 제작함.
+[GGML Quntization](https://colab.research.google.com/drive/13hDsA-k0Wvb3JWczkglgC4QX7zb0BGUY)
+
 ## Acknowledgement
 * [언어적 특성과 서비스를 고려한 딥러닝 기반 한국어 방언 기계번역 연구 (임상범 외 2명)][deepdialect]
-* LoRA 
+* [LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS][LoRA]
+* GGML모델 변환 참고한 자료 : ['그동안 한 시도들과 polyglot-QLora 활용 팁'][arcalive]
 
 
 [polyglot]: https://huggingface.co/EleutherAI/polyglot-ko-12.8b
@@ -95,4 +118,5 @@ python ./Model_Test/Model_Test.py \
 [naver_clover]: https://www.ncloud.com/product/aiService/clovaStudio
 [alpacaglora]: https://github.com/vihangd/alpaca-qlora
 [deepdialect]: https://koreascience.kr/article/JAKO202209542033704.pdf
-
+[LoRA]: https://arxiv.org/pdf/2106.09685.pdf
+[arcalive]: https://arca.live/b/alpaca/79988181?target=all&keyword=llama&p=1
