@@ -25,8 +25,6 @@ Data Downsampling을 통해 각 4개 도의 사투리 발화 Corpus 개수를 �
 ## 3. 활용 모델 (Polyglot-ko-12.8b)<br> 
 이번에 사용한 모델은 [**Polyglot-ko-12.8b**][polyglot] 모델을 사용하였다. 이 모델이 선택된 이유는 다음과 같습니다.<br>
 
-
-
 <ol>
   1. GPT-NeoX 기반으로 한국어 데이터셋(863GB)으로 Pre-Trained된 모델. <br/>
   2. 한국어를 기반으로 Pre-Trained된 모델 중에서는 한국어 성능이 좋은 모델임. (나머지는 영어가 섞인 데이터셋을 통해 훈련된 모델에 한국어 양이 적음.) <br/>
@@ -41,13 +39,57 @@ Data Downsampling을 통해 각 4개 도의 사투리 발화 Corpus 개수를 �
 ## 4. Alpaca-QLoRA
 사용된 학습 방식은 **Alpaca-QLoRA**의 방식을 채용. <br>
 또한, **4Bit-Quantization**를 이용한 LoRA방식을 도입하여, fine-tuning을 진행했음.<br>
-[**Alpaca-qlora**][alpacaglora] 중, finetune.py를 그대로 진행. (라이센스가 Apache2.0이라 여기에도 올린다.)
+[**Alpaca-qlora**][alpacaglora] 중, finetune.py를 조금 수정하였음 (허깅페이스 업로드 추가). 
+(라이센스가 Apache2.0이라 여기에도 올린다.)<br>
+> **학습환경은 Colab A100 40g환경에서 진행했습니다.**
 
+```bash
+python ./Alpaca-QLoRA/finetune.py \
+  --base_model "EleutherAI/polyglot-ko-12.8b" \
+  --train_data_path 'train_data_paths' \
+  --valid_data_path 'valid_data_paths' \
+  --hub_dir 'your huggingface dir' \
+  --val_set_size 36000 \
+  --num_epochs 1 \
+  --learning_rate 1e-4 \
+  --batch_size 256 \
+  --micro_batch_size 16 \
+  --lora_r 16 \
+  --lora_target_modules "[query_key_value, xxx]" \
+  --prompt_template_name 'custom_templete'
+```
+* val_set_size는 기존의 값이 아닌 임의값을 줬음.(finetuning하면서 임의로 했다가 이렇게 됨.)<br>
+* num_epochs는 대형 LLM은 거의 1~5에포크 이내에도 Over-Fitting 문제가 잘 발생하므로, 1번만 진행 <br>
+* learning_rate 는 최대값임. 즉, learning_rate는 최대로 저 값까지 올라갔다가 조정이 됨.<br>
+* lora_r (Lora 랭크)는 초기는 8, 좀 더 학습 파라미터 수를 늘리고 싶으면 16, 32정도로 늘려도 됨. <br>
+* lora_target_modules는 기본은 LLaMA 기반의 것을 사용하나, 현재 GPT-NeoX 포맷용으로 저 값을 사용 <br>
+* prompt는 데이터셋 전처리 과정에서 프롬프트를 커스텀으로 하나 구성하였음.
+* wandb를 통해 웹사이트에서 Training과정을 확인할 수 있음.
+* 
+
+## 5. 모델 테스트
+학습한 모델을 테스트하고, BLEU 점수를 계산.
+> **Google Colab 환경에서 진행**, 추론 속도가 A100과 V100이 거의 비슷하기에 V100 환경에서 테스트 
+```bash
+python ./Model_Test/Model_Test.py \
+	--base_model 'EleutherAI/polyglot-ko-12.8b' \
+	--lora_weights 'Meohong/Dialect-Polyglot-12.8b-QLoRA' \
+	--test_sets 'your test dataset'
+```
+* 평균적으로 문장 생성 하나 당 평균 7~10초 가량 걸렸음. (A100 환경에선 1초정도 더 빠르다고 생각하면 됨)
+* 따라서, 테스트셋으로 2200개의 문장을 예측하고, BLEU점수를 계산하였음.
+* 결과, _**BELU 평균 점수 : 80.63883099327529**_
+* 22년 딥러닝 기반 한국어 방언 기계번역 연구 논문에서 나온 Transformer를 이용한 Many2One 모델보다는 매우 떨어지는 모습을 보였음.
+* 아마도 **학습에 들인 데이터셋 수**와 데이터셋 처리방식을 개선한다면, 더 좋은 번역 성능을 보일 수 있을 것.
+
+## Acknowledgement
+* [언어적 특성과 서비스를 고려한 딥러닝 기반 한국어 방언 기계번역 연구 (임상범 외 2명)][deepdialect]
+* LoRA 
 
 
 [polyglot]: https://huggingface.co/EleutherAI/polyglot-ko-12.8b
 [kullmv2]: https://huggingface.co/nlpai-lab/kullm-polyglot-12.8b-v2
 [naver_clover]: https://www.ncloud.com/product/aiService/clovaStudio
 [alpacaglora]: https://github.com/vihangd/alpaca-qlora
-
+[deepdialect]: https://koreascience.kr/article/JAKO202209542033704.pdf
 
