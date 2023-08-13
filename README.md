@@ -64,8 +64,11 @@ python ./Alpaca-QLoRA/finetune.py \
 * lora_r (Lora 랭크)는 초기는 8, 좀 더 학습 파라미터 수를 늘리고 싶으면 16, 32정도로 늘려도 됨. <br>
 * lora_target_modules는 기본은 LLaMA 기반의 것을 사용하나, 현재 GPT-NeoX 포맷용으로 저 값을 사용 <br>
 * prompt는 데이터셋 전처리 과정에서 프롬프트를 커스텀으로 하나 구성하였음.
-* wandb를 통해 웹사이트에서 Training과정을 확인할 수 있음.
-* 
+* wandb를 통해 웹사이트에서 Training과정을 확인할 수 있음.<br>
+
+
+
+
 
 ## 5. 모델 테스트
 학습한 모델을 테스트하고, BLEU 점수를 계산.
