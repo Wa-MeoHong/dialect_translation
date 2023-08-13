@@ -1,0 +1,9 @@
+datasets==2.7.1
+transformers
+tqdm
+seaborn
+pandas
+numpy
+matplotlib
+scikit-learn
+fire
