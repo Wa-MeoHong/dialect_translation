@@ -85,15 +85,15 @@ def main(
         global hate_scores
         if info["label"] == "Hate": 
             hate_scores = hate_scores + info["score"]
-            strings = "욕설/혐오 발언이 탐지되었습니다."
+            strings = "욕설/비하 발언이 탐지되었습니다."
             
             if hate_scores >= 3.0:
-                strings = "욕설/혐오 발언 지수가 3점이 넘어 통화를 종료합니다."
+                strings = "욕설/비하 발언 지수가 3점이 넘어 통화를 종료합니다."
                 hate_scores = 0.0
                 
             return hate_scores, strings
         else:
-            strings = "욕설/혐오 발언 X"
+            strings = "욕설/비하 발언 X"
             return hate_scores, strings
 
     # 모델이 입력 문장에 대해 번역을 실행하는 함수 
