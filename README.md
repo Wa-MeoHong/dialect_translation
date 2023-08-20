@@ -69,7 +69,7 @@ python ./Alpaca-QLoRA/finetune.py \
 
 ## 5. 모델 테스트
 학습한 모델을 테스트하고, BLEU 점수를 계산.
-> **Google Colab 환경에서 진행**, 추론 속도가 A100과 V100이 거의 비슷하기에 V100 환경에서 테스트 
+> **중요! Google Colab 환경에서 진행**, 추론 속도가 A100과 V100이 거의 비슷하기에 V100 환경에서 테스트 
 ```bash
 python ./Model_Test/Model_Test.py \
 	--base_model 'EleutherAI/polyglot-ko-12.8b' \
