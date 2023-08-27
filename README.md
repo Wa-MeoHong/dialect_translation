@@ -132,6 +132,9 @@ pip install anvil-uplink
 > launch_ssh_cloudflared(password="<PUT_YOUR_PASSWORD_HERE>")
 > ```
 > 3. 다음과 같이 셀이 실행된 모습이 보이면, VSCode Remote SSH의 내용 중 SSH주소를 카피하여, VScode로 넘어간다.
+> ![Colab-ssh](./Colab_ssh.png)
+> 4. **먼저 VScode에서 Remote-SSH를 받고 진행**, VScode에서 좌하단의 ><(SSH연결)를 클릭하여, '호스트에 연결' -> 'SSH 호스트 구성'을 클릭한다.
+> **혹은 (Ctrl + Shift + P)를 입력하고, 나오는 검색창에 원격 구성 파일을 검색한다.**
 #### 2. 
 
 ## Acknowledgement
