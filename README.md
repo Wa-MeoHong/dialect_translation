@@ -149,10 +149,33 @@ pip install anvil-uplink
 > 	Port 22
 > 	ProxyCommand C:\\cloudflared.exe access ssh --hostname %h
 > ```
-> 9. 이제 다시 '호스트의 연결'을 누르고, 복사한 Colab-ssh 주소를 붙여넣고, 쭉 진행한다. 끝
-> 
+> 9. 이제 다시 '호스트의 연결'을 누르고, 복사한 Colab-ssh 주소를 붙여넣고, 쭉 진행한다. Colab 연결 끝
+> ![vscode3](./doc/VScode_ssh-3.png)<br>
 
-#### 2. 
+#### 2. Anvil Web Server로 로컬 마이크 - 코랩 서버를 경유해보자.
+> 이 방식은 Colab 자원을 통해 python을 실행할 경우, 로컬 마이크/카메라를 이용하지 못하는 불상사가 발생하여 이를 처리하기 위해 터득한 방식<br>
+> 혹여나 더 좋은 방식이 있다면, 그 방식을 취하면 감사하겠습니다. <br>
+> **참고 링크 : [Anvil로 간단히 코랩 AI 서비스 하기](https://youtu.be/ivWp6XTtFjo?si=EnAD-QA7N_JKGtoC)**
+> 1. Anvil 웹사이트로 들어가 먼저 UI를 제작한다
+> 2. (선택 사항) 어떤 버튼을 하나 만들어, 버튼을 누르면, anvil.server.call을 통해 연결된 클라이언트의 함수를 호출하고, return 값을 받아오게 한다.
+> 3. Anvil-uplink를 통해, 서버 키를 가져온다.
+> 4. python 파일로 넘어가고, 다음을 입력해놓는다.
+>    ```python
+>    import anvil.server
+>    anvil.server.connect("YOUR_SERVER_KEY") # 실행하면 anvil web app server와 연결이 된다.
+>    ```
+> 5. 호출 하고 싶은 함수 위에는 다음과 같이 함수 위에 '@anvil.server.callable'을 입력해 놓는다.
+>    ```python
+>    @anvil.server.callable # 이 함수는 anvil에서 호출 가능한 함수, 
+>    def observe_voice():
+>    	...
+>    ```
+> 6. 계속 서버의 호출을 받게 하기 위해, 다음과 같은 코드를 추가한다. (단, 전체 코드 실행중에 하면 여기서 실행이 묶이니 주의)
+>    ```python
+>    anvil.server.wait_forever() # 서버의 호출을 받을 때까지 계속 대기하는 것
+>    	...
+>    ```
+> 7. 우상단의 Publish를 통해 자신의 웹 주소를 띄우고, 실행한다. (Colab에서도 anvil을 통해 통신이 가능하므로, 로컬 마이크를 Colab에서 활용하지 못하는 문제 해결)
 
 ## Acknowledgement
 * [언어적 특성과 서비스를 고려한 딥러닝 기반 한국어 방언 기계번역 연구 (임상범 외 2명)][deepdialect]
