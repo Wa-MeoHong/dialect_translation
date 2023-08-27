@@ -65,7 +65,7 @@ python ./Alpaca-QLoRA/finetune.py \
 * lora_target_modules는 기본은 LLaMA 기반의 것을 사용하나, 현재 GPT-NeoX 포맷용으로 저 값을 사용 <br>
 * prompt는 데이터셋 전처리 과정에서 프롬프트를 커스텀으로 하나 구성하였음.
 * wandb를 통해 웹사이트에서 Training과정을 확인할 수 있음.<br>
-![Training](./Training_picture.png)
+![Training](./doc/Training_picture.png)
 
 ## 5. 모델 테스트
 학습한 모델을 테스트하고, BLEU 점수를 계산.
@@ -132,9 +132,24 @@ pip install anvil-uplink
 > launch_ssh_cloudflared(password="<PUT_YOUR_PASSWORD_HERE>")
 > ```
 > 3. 다음과 같이 셀이 실행된 모습이 보이면, VSCode Remote SSH의 내용 중 SSH주소를 카피하여, VScode로 넘어간다.
-> ![Colab-ssh](./Colab_ssh.png)
+> ![Colab-ssh](./doc/Colab_ssh.png)
 > 4. **먼저 VScode에서 Remote-SSH를 받고 진행**, VScode에서 좌하단의 ><(SSH연결)를 클릭하여, '호스트에 연결' -> 'SSH 호스트 구성'을 클릭한다.
 > **혹은 (Ctrl + Shift + P)를 입력하고, 나오는 검색창에 원격 구성 파일을 검색한다.**
+> ![vscode1](./doc/VScode_ssh-1.png)<br>
+> 5. #### 주의할 점은 여기서 가장 맨 위의 있는 사용자용 SSH 구성파일로 들어가야한다.
+> ![vscode2](./doc/VScode_ssh-2.png)<br>
+>
+> 6. 그 후, 다음과 같은 내용을 입력하고 저장한다.
+> ```python
+> Host *.trycloudflare.com
+> 	HostName %h
+> 	User root
+> 	Port 22
+> 	ProxyCommand C:\\cloudflared.exe access ssh --hostname %h
+> ```
+> 7. 이제 다시 '호스트의 연결'을 누르고, 복사한 Colab-ssh 주소를 붙여넣고, 쭉 진행한다. 끝
+> 
+
 #### 2. 
 
 ## Acknowledgement
