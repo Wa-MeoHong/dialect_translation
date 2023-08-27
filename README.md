@@ -110,6 +110,30 @@ python ./Model_Create/TransformGGML.py \
 * 그 후, 4bit-Quantization을 진행한다. jupyter Notebook으로 제작함.
 [GGML Quntization](https://colab.research.google.com/drive/13hDsA-k0Wvb3JWczkglgC4QX7zb0BGUY)
 
+## 번외 2. Colab서버와 SSH연결 후, 로컬 PC 상에서 VSCode로 연결, 웹 앱을 통해 데이터 전달 및 처리
+* 개인 PC의 환경은 보통 3070, 높아봐야 3080일 것이고, 대학생의 경우, 랩탑(노트북)을 통해 작업할 것이다. 또한, 라즈베리파이 등 임베디드 시스템을 통해 
+A.I. 서비스를 제공하는 경우, 로컬 사양으로 처리하기 매우 힘들다. (가장 큰 이유는 RAM부족)
+* 따라서, A.I. 서비스를 원활히 하기위해, SSH연결, Anvil Web Service를 이용하여, 처리 공간과 작업 공간을 따로 분리하였다.
+* Colab, Local PC 둘다 pip install을 통해, anvil-uplink module을 다운로드 한다.<br>
+```bash
+pip install anvil-uplink
+```
+#### 1. **Colab-Local PC로 SSH 연결 Cloudflared 이용** (참고 : [Colab-ssh](https://github.com/WassimBenzarti/colab-ssh)
+**ngrok**를 이용하는 방법은 다음 [Youtube](https://youtu.be/oAKxxLy-G5g?si=fiHhJFYB1nKwzadW)를 이용하시면 됩니다.
+> 1. 먼저 Colab에서 다음을 진행한다.
+> ```
+> # Install colab_ssh on google colab
+> !pip install colab_ssh --upgrade
+> # After, Download required modules Optionally
+> ```
+> 2. 그 후, Colab에서 다음과 같이 셀을 작성
+> ```
+> from colab_ssh import launch_ssh_cloudflared, init_git_cloudflared
+> launch_ssh_cloudflared(password="<PUT_YOUR_PASSWORD_HERE>")
+> ```
+> 3. 다음과 같이 셀이 실행된 모습이 보이면, VSCode Remote SSH의 내용 중 SSH주소를 카피하여, VScode로 넘어간다.
+#### 2. 
+
 ## Acknowledgement
 * [언어적 특성과 서비스를 고려한 딥러닝 기반 한국어 방언 기계번역 연구 (임상범 외 2명)][deepdialect]
 * [LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS][LoRA]
