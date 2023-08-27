@@ -157,7 +157,8 @@ pip install anvil-uplink
 > 혹여나 더 좋은 방식이 있다면, 그 방식을 취하면 감사하겠습니다. <br>
 > **참고 링크 : [Anvil로 간단히 코랩 AI 서비스 하기](https://youtu.be/ivWp6XTtFjo?si=EnAD-QA7N_JKGtoC)**
 > 1. Anvil 웹사이트로 들어가 먼저 UI를 제작한다
-> 2. (버튼은 선택 사항) 어떤 버튼을 하나 만들어, 버튼을 누르면, anvil.server.call을 통해 연결된 클라이언트의 함수를 호출하고, return 값을 받아오게 한다.
+> 2. (버튼은 선택 사항) 어떤 버튼을 하나 만들어, 버튼을 누르면, anvil.server.call을 통해 연결된 클라이언트의 함수를 호출하고, return 값을 받아오게 한다.<br>
+> ![anvil](./doc/anvil.png)<br>
 > 3. Anvil-uplink를 통해, 서버 키를 가져온다.
 > 4. python 파일로 넘어가고, 다음을 입력해놓는다.
 >    ```python
