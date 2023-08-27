@@ -118,7 +118,7 @@ A.I. 서비스를 제공하는 경우, 로컬 사양으로 처리하기 매우 �
 ```bash
 pip install anvil-uplink
 ```
-#### 1. **Colab-Local PC로 SSH 연결 Cloudflared 이용** (참고 : [Colab-ssh](https://github.com/WassimBenzarti/colab-ssh)
+#### 1. **Colab-Local PC로 SSH 연결 Cloudflared 이용** (참고 : [Colab-ssh](https://github.com/WassimBenzarti/colab-ssh) ) 
 **ngrok**를 이용하는 방법은 다음 [Youtube](https://youtu.be/oAKxxLy-G5g?si=fiHhJFYB1nKwzadW)를 이용하시면 됩니다.
 > 1. 먼저 Colab에서 다음을 진행한다.
 > ```
@@ -133,13 +133,15 @@ pip install anvil-uplink
 > ```
 > 3. 다음과 같이 셀이 실행된 모습이 보이면, VSCode Remote SSH의 내용 중 SSH주소를 카피하여, VScode로 넘어간다.
 > ![Colab-ssh](./doc/Colab_ssh.png)
-> 4. **먼저 VScode에서 Remote-SSH를 받고 진행**, VScode에서 좌하단의 ><(SSH연결)를 클릭하여, '호스트에 연결' -> 'SSH 호스트 구성'을 클릭한다.
+> 4. 먼저 Cloudfare의 바이너리 파일을 다운로드 받는다. [여기](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+>    각자, OS에 맞는 것을 다운로드 후, 압축 해제 시 나오는 exe파일의 절대경로를 외운다. <br> (본인은 윈도우 기준, C:\\~~~ 로 설정됨) 
+> 5. **먼저 VScode에서 Remote-SSH를 다운로드**, VScode에서 좌하단의 ><(SSH연결)를 클릭하여, '호스트에 연결' -> 'SSH 호스트 구성'을 클릭한다.
 > **혹은 (Ctrl + Shift + P)를 입력하고, 나오는 검색창에 원격 구성 파일을 검색한다.**
 > ![vscode1](./doc/VScode_ssh-1.png)<br>
-> 5. #### 주의할 점은 여기서 가장 맨 위의 있는 사용자용 SSH 구성파일로 들어가야한다.
+> 7. #### 주의할 점은 여기서 가장 맨 위의 있는 사용자용 SSH 구성파일로 들어가야한다.
 > ![vscode2](./doc/VScode_ssh-2.png)<br>
 >
-> 6. 그 후, 다음과 같은 내용을 입력하고 저장한다.
+> 8. 그 후, 다음과 같은 내용을 입력하고 저장한다.
 > ```python
 > Host *.trycloudflare.com
 > 	HostName %h
@@ -147,7 +149,7 @@ pip install anvil-uplink
 > 	Port 22
 > 	ProxyCommand C:\\cloudflared.exe access ssh --hostname %h
 > ```
-> 7. 이제 다시 '호스트의 연결'을 누르고, 복사한 Colab-ssh 주소를 붙여넣고, 쭉 진행한다. 끝
+> 9. 이제 다시 '호스트의 연결'을 누르고, 복사한 Colab-ssh 주소를 붙여넣고, 쭉 진행한다. 끝
 > 
 
 #### 2. 
